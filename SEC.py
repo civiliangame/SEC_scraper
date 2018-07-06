@@ -53,7 +53,10 @@ def get_info(num, input_url):
                 continue
 
             #Write it into the excel spreadsheet
-            sheet1.write(i,j, td[j].get_text())
+            try:
+                sheet1.write(i,j, td[j].get_text())
+            except Exception:
+                continue
             print(td[j].get_text())
             #We now want to find the "See also" parts
             for a in td[j].find_all("a"):
