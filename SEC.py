@@ -34,27 +34,27 @@ def get_info(num, input_url):
     #Thus, the traditional method of narrowing down will not work, as the tables end where they should not.
 
 
-    if(num < 2016):
+    if(num < 2016 and num > 1998):
         tr_list = br.find_all("tr", {"valign": "top"})
     else:
         tr_list = br.find_all("tr")
     for tr in tr_list:
-
+        #print(tr)
         #Then, find the "td" tags
         td = tr.find_all("td")
-
         #If it is the correct "td" tag, it should have three objects in it. Release Number, Date, and Action
         if (len(td) != 3):
             continue
 
         #a few "td" tags have the column names in it. We don't want this in our excel sheet.
         for j in range(0, len(td)):
+
             if (td[j].get_text() == "Release No." or td[j].get_text() == "Date" or td[j].get_text() == "Action"):
                 continue
 
             #Write it into the excel spreadsheet
             sheet1.write(i,j, td[j].get_text())
-
+            print(td[j].get_text())
             #We now want to find the "See also" parts
             for a in td[j].find_all("a"):
 
@@ -78,9 +78,11 @@ def get_info(num, input_url):
 
 #Find everything
 # #The website changes from 2016 onwards.
-for i in range (1995,2018):
+for i in range (1995,2019):
     if i == 2018:
-        get_info("https://www.sec.gov/litigation/litreleases.shtml")
+        get_info(i, "https://www.sec.gov/litigation/litreleases.shtml")
     else:
         get_info(i, "https://www.sec.gov/litigation/litreleases/litrelarchive/litarchive" + str(i) + ".shtml")
+    print(i)
 
+#get_info(1995,"https://www.sec.gov/litigation/litreleases/litrelarchive/litarchive" + str(1995) + ".shtml" )
